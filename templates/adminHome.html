@@ -12,6 +12,7 @@
 {% block body %}
     <h1 style="text-align: center ;font-style: italic; font-family: 'Berlin Sans FB',cursive">ADMINSTARTOR</h1>
     <h3>Welcome <u><i>{{ member.username }}</i></u>. You are logged in as admin</h3>
+    <a href="{% url 'upload' %}" class="btn btn-warning">Upload</a>
 {% endblock %}
 </body>
 </html>

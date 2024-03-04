@@ -1,3 +1,4 @@
+{% extends 'inner-page.html' %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,8 +23,9 @@
     </style>
 </head>
 <body>
-        <table>
-        <caption><h2>Products</h2></caption>
+{% block body %}
+        <table class="table table-bordered table-secondary table-striped table-">
+        <caption class="caption-top"><h2>Products</h2></caption>
             <thead>
             <tr>
                 <th>Name</th>
@@ -42,7 +44,7 @@
         </tbody>
         </table>
     	
-    	
+{% endblock %}    	
 
     
 </body>

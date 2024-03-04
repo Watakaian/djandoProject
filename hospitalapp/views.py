@@ -2,7 +2,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from hospitalapp.models import Member, Appointment, Contact, Users, Products
+
+from hospitalapp.forms import ImageUploadForm
+from hospitalapp.models import Member, Appointment, Contact, Users, Products,ImageModel
 
 
 # Create your views here.
@@ -20,6 +22,8 @@ def index(request):
             )
             appoint.save()
             messages.info(request, 'Appointment created in back-end')
+            return redirect('/')
+
         elif request.POST.get('form_type') == 'formTwo':
             cont = Contact(
                 name=request.POST['name'],
@@ -54,9 +58,24 @@ def register(request):
     else:
         return render(request, 'register.html')
 
+def upload_image(request):
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/showimage')
+    else:
+        form = ImageUploadForm()
+    return render(request, 'upload.html', {'form': form})
 
-def upload(request):
-    return render(request, 'upload.html', )
+def show_image(request):
+    images = ImageModel.objects.all()
+    return render(request, 'show_images.html', {'images': images})
+
+def imagedelete(request, id):
+    image = ImageModel.objects.get(id=id)
+    image.delete()
+    return redirect('/showimage')
 
 
 def appointments(request):
