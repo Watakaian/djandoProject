@@ -13,4 +13,6 @@ urlpatterns = [
     path('details/',views.appointments,name='appointments'),
     path('member/',views.members,name='members'),
     path('users/',views.users,name='users'),
+    path('products/',views.products,name='products'),
+    path('adminHome/',views.adminhome,name='adminHome')
 ]

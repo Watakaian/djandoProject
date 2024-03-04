@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render,redirect
-from hospitalapp.models import Member, Appointment,Contact,Users
+from django.shortcuts import render, redirect
+from hospitalapp.models import Member, Appointment, Contact, Users, Products
 
 
 # Create your views here.
@@ -21,41 +21,78 @@ def index(request):
             appoint.save()
             messages.info(request, 'Appointment created in back-end')
         elif request.POST.get('form_type') == 'formTwo':
-            cont=Contact(
+            cont = Contact(
                 name=request.POST['name'],
                 email=request.POST['email'],
                 subject=request.POST['subject'],
                 message=request.POST['message'],
             )
             cont.save()
-            messages.success(request,'Message sent successfully')
+            messages.success(request, 'Message sent successfully')
         return redirect('/')
     else:
-        return render(request,'index.html',)
+        return render(request, 'index.html', )
+
+
 def inner(request):
-    return render(request,'inner-page.html',)
+    return render(request, 'inner-page.html', )
+
+
 def login(request):
-    return render(request,'login.html',)
+    return render(request, 'login.html', )
+
+
 def register(request):
     if request.method == 'POST':
         member = Member(
             username=request.POST['username'],
             email=request.POST['email'],
             password=request.POST['password'],
-            )
+        )
         member.save()
-        return redirect('/register')
+        return redirect('/login')
     else:
-        return render(request,'register.html')
+        return render(request, 'register.html')
+
+
 def upload(request):
-    return render(request,'upload.html',)
+    return render(request, 'upload.html', )
+
+
 def appointments(request):
     myappoint = Appointment.objects.all()
-    return render(request,'appointmentDetails.html',{'myappoint': myappoint})
+    return render(request, 'appointmentDetails.html', {'myappoint': myappoint})
+
+
 def members(request):
     mymembers = Member.objects.all()
-    return render(request,'member.html',{'mymembers': mymembers})
+    return render(request, 'member.html', {'mymembers': mymembers})
+
+
 def users(request):
-    users= Users.objects.all()
-    return render(request,'users.html',{'users': users})
+    users = Users.objects.all()
+    return render(request, 'users.html', {'users': users})
+
+
+def products(request):
+    products = Products.objects.all()
+    return render(request, 'products.html', {'products': products})
+
+
+def adminhome(request):
+    if request.method == 'POST':
+        if Member.objects.filter(
+                username=request.POST['username'],
+                password=request.POST['password']).exists():
+            member = Member.objects.get(
+                username=request.POST['username'],
+                password=request.POST['password']
+            )
+            return render(request, 'adminHome.html', {'member': member})
+        else:
+            return render(request, 'login.html')
+            messages.error(request, 'No such member')
+    else:
+        return render(request, 'login.html')
+    messages.error(request, 'No such member')
 
