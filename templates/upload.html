@@ -1,4 +1,10 @@
 {% extends 'inner-page.html' %}
+<style>
+    input{
+        height: 70px;
+        width: 120px;
+    }
+</style>
 {% block body %}
     <form method="post" enctype="multipart/form-data" class="text-center d-block m-auto mb-4 form">
         {% csrf_token %}
